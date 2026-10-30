@@ -43,7 +43,7 @@ resource "aws_subnet" "client" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Nurudeen Website Client Subnet"
+    Name = "Nurudeen Website Client Subnet 1"
     Tier = "client"
   }
 }
