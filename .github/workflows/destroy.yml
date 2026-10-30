@@ -32,6 +32,7 @@ jobs:
         uses: hashicorp/setup-terraform@v4.0.1
         with:
           terraform_version: 1.17.1
+          terraform_wrapper: false
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v6.3.0
@@ -50,7 +51,8 @@ jobs:
         run: terraform plan -destroy -var-file="terraform.tfvars" -out=tfplan
 
       - name: Apply destruction plan
-        run: terraform apply -auto-approve tfplan
+        shell: bash
+        run: terraform apply -json -auto-approve tfplan | jq --unbuffered -r 'select(."@message" != null) | .["@message"]'
 
   reject-unconfirmed:
     if: ${{ inputs.confirm_destroy != 'destroy' }}
