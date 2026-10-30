@@ -1,0 +1,94 @@
+<mxfile host="app.diagrams.net" modified="2026-10-30T04:29:00.000Z" agent="Copilot" version="24.7.17" type="device">
+  <diagram id="nurudeen-website-architecture" name="Architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="title" value="Nurudeen Website — AWS Two-Tier Architecture" style="text;html=1;align=left;verticalAlign=middle;fontSize=24;fontStyle=1;fontColor=#17365D;" vertex="1" parent="1">
+          <mxGeometry x="40" y="24" width="900" height="42" as="geometry"/>
+        </mxCell>
+        <mxCell id="subtitle" value="HTTP website with a public client tier and private middle tier" style="text;html=1;align=left;verticalAlign=middle;fontSize=14;fontColor=#52657A;" vertex="1" parent="1">
+          <mxGeometry x="42" y="64" width="800" height="28" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="internet" value="Website visitors&#xa;HTTP :80" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E8F1FB;strokeColor=#4A86C5;fontSize=15;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="50" y="310" width="150" height="75" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="vpc" value="AWS VPC — 10.20.0.0/16" style="rounded=1;whiteSpace=wrap;html=1;arcSize=4;dashed=1;dashPattern=8 4;fillColor=none;strokeColor=#6C8EBF;fontColor=#17365D;fontSize=18;fontStyle=1;verticalAlign=top;spacingTop=14;" vertex="1" parent="1">
+          <mxGeometry x="245" y="145" width="1010" height="570" as="geometry"/>
+        </mxCell>
+        <mxCell id="igw" value="Internet Gateway" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="285" y="300" width="145" height="65" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="public" value="PUBLIC SUBNET — 10.20.1.0/24" style="swimlane;html=1;startSize=34;horizontal=1;rounded=1;fillColor=#DAE8FC;swimlaneFillColor=#F4F8FD;strokeColor=#6C8EBF;fontColor=#17365D;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="205" width="350" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="client_sg" value="Client security group&#xa;Inbound HTTP :80 from internet" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="485" y="258" width="300" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="client_ec2" value="CLIENT TIER — EC2&#xa;Amazon Linux + httpd&#xa;index.html: “Welcome to&#xa;Nurudeen's website!”&#xa;Proxy /middle → private tier" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="505" y="340" width="260" height="155" as="geometry"/>
+        </mxCell>
+        <mxCell id="client_eip" value="Website Elastic IP&#xa;Stable public address&#xa;EC2 Name tag: Nurudeen Website" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="490" y="525" width="290" height="75" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="private" value="PRIVATE SUBNET — 10.20.2.0/24" style="swimlane;html=1;startSize=34;horizontal=1;rounded=1;fillColor=#E1D5E7;swimlaneFillColor=#FAF7FC;strokeColor=#9673A6;fontColor=#5B3B69;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="840" y="205" width="370" height="420" as="geometry"/>
+        </mxCell>
+        <mxCell id="middle_sg" value="Middle security group&#xa;Inbound TCP :8080 only from client SG" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;strokeColor=#B85450;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="865" y="258" width="320" height="55" as="geometry"/>
+        </mxCell>
+        <mxCell id="middle_ec2" value="MIDDLE TIER — EC2&#xa;Private IP only; no public IP&#xa;Amazon Linux + httpd :8080&#xa;Private application endpoint" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;strokeColor=#82B366;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="890" y="350" width="270" height="125" as="geometry"/>
+        </mxCell>
+        <mxCell id="nat" value="NAT Gateway&#xa;Outbound updates / package installs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="885" y="525" width="175" height="68" as="geometry"/>
+        </mxCell>
+        <mxCell id="nat_eip" value="NAT Elastic IP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1075" y="535" width="110" height="48" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="github" value="GitHub Actions&#xa;Push to main: Terraform apply&#xa;Manual workflow: confirmed destroy&#xa;AWS credentials stored as repo secrets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="225" width="250" height="125" as="geometry"/>
+        </mxCell>
+        <mxCell id="state" value="Amazon S3&#xa;Terraform remote state&#xa;nurudeens-website/terraform.tfstate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="1300" y="420" width="250" height="85" as="geometry"/>
+        </mxCell>
+        <mxCell id="note" value="The S3 state bucket is pre-created and is not removed by Terraform destroy.&#xa;NAT Gateway and Elastic IP resources can incur AWS charges." style="text;html=1;align=left;verticalAlign=top;fontSize=12;fontColor=#52657A;" vertex="1" parent="1">
+          <mxGeometry x="1295" y="545" width="270" height="75" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_visitor_igw" value="HTTP :80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A86C5;strokeWidth=2;endArrow=block;endFill=1;fontSize=12;" edge="1" parent="1" source="internet" target="igw">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_igw_client" value="Public route + website EIP" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#4A86C5;strokeWidth=2;endArrow=block;endFill=1;fontSize=12;" edge="1" parent="1" source="igw" target="client_ec2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_eip_client" value="Attached to client EC2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#D6B656;endArrow=block;endFill=1;fontSize=11;" edge="1" parent="1" source="client_eip" target="client_ec2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_proxy_middle" value="Proxy /middle — TCP :8080" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82B366;strokeWidth=2;endArrow=block;endFill=1;fontSize=12;" edge="1" parent="1" source="client_ec2" target="middle_ec2">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_middle_nat" value="Outbound only" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;strokeColor=#D6B656;endArrow=block;endFill=1;fontSize=11;" edge="1" parent="1" source="middle_ec2" target="nat">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_nat_eip" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#D6B656;endArrow=block;endFill=1;" edge="1" parent="1" source="nat" target="nat_eip">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_nat_igw" value="Internet egress" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;strokeColor=#D6B656;endArrow=block;endFill=1;fontSize=11;" edge="1" parent="1" source="nat" target="igw">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_github_state" value="Terraform state read/write" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;strokeColor=#9673A6;endArrow=block;endFill=1;fontSize=11;" edge="1" parent="1" source="github" target="state">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_github_aws" value="Terraform provisioning / destroy" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;strokeColor=#9673A6;endArrow=block;endFill=1;fontSize=11;" edge="1" parent="1" source="github" target="vpc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

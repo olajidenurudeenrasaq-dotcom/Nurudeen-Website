@@ -9,6 +9,10 @@ Terraform deploys a small two-tier AWS website:
 
 The EC2 instance's AWS **Name** tag is `Nurudeen Website`. The public address remains an IP address; the deployment also prints a clickable HTTP URL.
 
+## Architecture diagram
+
+The editable architecture diagram is in [`architecture.drawio`](./architecture.drawio). Open [app.diagrams.net](https://app.diagrams.net), choose **File > Open From > Device**, and select that file. No plugin is required to view or edit it in diagrams.net. To edit the diagram inside VS Code instead, install a draw.io/diagrams.net extension; this is optional.
+
 ## Important costs
 
 This deployment creates two EC2 instances, two Elastic IP addresses, and a NAT gateway. NAT gateways are billed hourly and for data processed, even when idle. Review current AWS pricing for your region and run the destroy workflow when you no longer need the environment. The S3 Terraform state bucket is not created or destroyed by this project.
