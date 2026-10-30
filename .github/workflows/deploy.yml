@@ -49,4 +49,5 @@ jobs:
         run: terraform apply -auto-approve tfplan
 
       - name: Show website URL
-        run: echo "Website URL: $(terraform output -raw website_url)" >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo "Website URL: $(terraform output -raw website_url)" >> "$GITHUB_STEP_SUMMARY"
