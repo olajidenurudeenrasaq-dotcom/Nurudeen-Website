@@ -1,0 +1,62 @@
+name: Destroy Nurudeen Website
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destroy:
+        description: Type destroy to confirm removal of all managed infrastructure
+        required: true
+        type: string
+        default: "no"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nurudeens-website-terraform
+  cancel-in-progress: false
+
+jobs:
+  destroy:
+    if: ${{ inputs.confirm_destroy == 'destroy' }}
+    runs-on: ubuntu-latest
+    env:
+      TF_IN_AUTOMATION: "true"
+      AWS_REGION: us-east-1
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Initialize Terraform
+        run: terraform init
+
+      - name: Validate Terraform
+        run: terraform validate
+
+      - name: Plan destruction
+        run: terraform plan -destroy -var-file="terraform.tfvars" -out=tfplan
+
+      - name: Apply destruction plan
+        run: terraform apply -auto-approve tfplan
+
+  reject-unconfirmed:
+    if: ${{ inputs.confirm_destroy != 'destroy' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require exact confirmation
+        run: |
+          echo "Destroy cancelled: enter the exact word 'destroy' to remove infrastructure."
+          exit 1
