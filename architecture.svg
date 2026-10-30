@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680" role="img" aria-labelledby="title description">
+  <title id="title">Nurudeen Website AWS two-tier architecture</title>
+  <desc id="description">Visitors access a public Apache client EC2 through a stable Elastic IP. The client proxies requests to a private Apache middle-tier EC2. A NAT gateway provides private outbound internet access. GitHub Actions manages the infrastructure and stores Terraform state in S3.</desc>
+  <defs>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#3977b8"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#4d8c46"/>
+    </marker>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#80579a"/>
+    </marker>
+    <marker id="arrow-gold" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#b38b22"/>
+    </marker>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; fill: #203247; }
+      .title { font-size: 25px; font-weight: 700; fill: #17365d; }
+      .subtitle { font-size: 14px; fill: #52657a; }
+      .box-title { font-size: 15px; font-weight: 700; }
+      .body { font-size: 13px; }
+      .small { font-size: 11px; }
+      .section { font-size: 14px; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="680" fill="#ffffff"/>
+  <text x="35" y="42" class="title">Nurudeen Website — AWS Two-Tier Architecture</text>
+  <text x="37" y="68" class="subtitle">Public client tier, private middle tier, and automated Terraform deployment</text>
+
+  <rect x="205" y="105" width="740" height="510" rx="18" fill="#f8fbff" stroke="#6c8ebf" stroke-width="2" stroke-dasharray="9 6"/>
+  <text x="228" y="133" class="section" fill="#17365d">AWS VPC — 10.20.0.0/16</text>
+
+  <rect x="230" y="155" width="320" height="435" rx="12" fill="#f1f7ff" stroke="#6c8ebf" stroke-width="1.5"/>
+  <path d="M230 167a12 12 0 0 1 12-12h296a12 12 0 0 1 12 12v30H230z" fill="#d8e8fb"/>
+  <text x="390" y="181" text-anchor="middle" class="section" fill="#17365d">PUBLIC SUBNET — 10.20.1.0/24</text>
+
+  <rect x="575" y="155" width="340" height="435" rx="12" fill="#fbf8fd" stroke="#9673a6" stroke-width="1.5"/>
+  <path d="M575 167a12 12 0 0 1 12-12h316a12 12 0 0 1 12 12v30H575z" fill="#eadff0"/>
+  <text x="745" y="181" text-anchor="middle" class="section" fill="#5b3b69">PRIVATE SUBNET — 10.20.2.0/24</text>
+
+  <rect x="30" y="270" width="145" height="76" rx="12" fill="#e8f1fb" stroke="#4a86c5" stroke-width="2"/>
+  <text x="102" y="300" text-anchor="middle" class="box-title">Website visitors</text>
+  <text x="102" y="324" text-anchor="middle" class="body">HTTP :80</text>
+
+  <rect x="260" y="230" width="260" height="53" rx="9" fill="#fbe8e7" stroke="#b85450" stroke-width="1.5"/>
+  <text x="390" y="252" text-anchor="middle" class="box-title">Client security group</text>
+  <text x="390" y="270" text-anchor="middle" class="small">Inbound HTTP :80 from internet</text>
+
+  <rect x="260" y="310" width="260" height="150" rx="12" fill="#e2f0df" stroke="#82b366" stroke-width="2"/>
+  <text x="390" y="339" text-anchor="middle" class="box-title">CLIENT TIER — EC2</text>
+  <text x="390" y="365" text-anchor="middle" class="body">Amazon Linux + httpd</text>
+  <text x="390" y="388" text-anchor="middle" class="body">“Welcome to Nurudeen's website!”</text>
+  <text x="390" y="416" text-anchor="middle" class="body">Proxies /middle to private tier</text>
+  <text x="390" y="439" text-anchor="middle" class="small">AWS Name tag: Nurudeen Website</text>
+
+  <rect x="285" y="492" width="210" height="65" rx="10" fill="#fff3cd" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="390" y="519" text-anchor="middle" class="box-title">Website Elastic IP</text>
+  <text x="390" y="540" text-anchor="middle" class="body">Stable public address</text>
+
+  <rect x="605" y="230" width="280" height="53" rx="9" fill="#fbe8e7" stroke="#b85450" stroke-width="1.5"/>
+  <text x="745" y="252" text-anchor="middle" class="box-title">Middle security group</text>
+  <text x="745" y="270" text-anchor="middle" class="small">TCP :8080 only from client tier</text>
+
+  <rect x="610" y="315" width="270" height="125" rx="12" fill="#e2f0df" stroke="#82b366" stroke-width="2"/>
+  <text x="745" y="345" text-anchor="middle" class="box-title">MIDDLE TIER — EC2</text>
+  <text x="745" y="371" text-anchor="middle" class="body">Private IP; no public IP</text>
+  <text x="745" y="395" text-anchor="middle" class="body">Amazon Linux + httpd :8080</text>
+  <text x="745" y="419" text-anchor="middle" class="small">Private application endpoint</text>
+
+  <rect x="610" y="500" width="165" height="60" rx="10" fill="#fff3cd" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="692" y="525" text-anchor="middle" class="box-title">NAT Gateway</text>
+  <text x="692" y="545" text-anchor="middle" class="small">Outbound access only</text>
+  <rect x="790" y="505" width="105" height="50" rx="9" fill="#fff3cd" stroke="#d6b656" stroke-width="1.5"/>
+  <text x="842" y="535" text-anchor="middle" class="small">NAT Elastic IP</text>
+
+  <rect x="990" y="175" width="185" height="125" rx="12" fill="#f0e8f5" stroke="#9673a6" stroke-width="2"/>
+  <text x="1082" y="203" text-anchor="middle" class="box-title">GitHub Actions</text>
+  <text x="1082" y="229" text-anchor="middle" class="body">Push to main:</text>
+  <text x="1082" y="248" text-anchor="middle" class="body">Terraform apply</text>
+  <text x="1082" y="270" text-anchor="middle" class="small">Manual, confirmed destroy</text>
+  <text x="1082" y="288" text-anchor="middle" class="small">AWS credentials in repo secrets</text>
+
+  <rect x="990" y="380" width="185" height="88" rx="12" fill="#e8f1fb" stroke="#6c8ebf" stroke-width="2"/>
+  <text x="1082" y="408" text-anchor="middle" class="box-title">Amazon S3</text>
+  <text x="1082" y="432" text-anchor="middle" class="body">Terraform remote state</text>
+  <text x="1082" y="453" text-anchor="middle" class="small">nurudeens-website/terraform.tfstate</text>
+
+  <text x="985" y="510" class="small">State bucket is pre-created and</text>
+  <text x="985" y="528" class="small">is not removed by Terraform destroy.</text>
+  <text x="985" y="558" class="small">NAT Gateway and Elastic IPs</text>
+  <text x="985" y="576" class="small">can incur AWS charges.</text>
+
+  <path d="M175 307H220V345H260" fill="none" stroke="#3977b8" stroke-width="2.5" marker-end="url(#arrow-blue)"/>
+  <text x="184" y="294" class="small" fill="#3977b8">HTTP :80</text>
+  <path d="M390 492V466" fill="none" stroke="#b38b22" stroke-width="2" marker-end="url(#arrow-gold)"/>
+  <path d="M520 383H610" fill="none" stroke="#4d8c46" stroke-width="2.5" marker-end="url(#arrow-green)"/>
+  <text x="565" y="370" text-anchor="middle" class="small" fill="#4d8c46">/middle — TCP :8080</text>
+  <path d="M745 440V500" fill="none" stroke="#b38b22" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-gold)"/>
+  <text x="758" y="475" class="small" fill="#8a6c1b">Outbound</text>
+  <path d="M775 530H790" fill="none" stroke="#b38b22" stroke-width="1.8" marker-end="url(#arrow-gold)"/>
+  <path d="M692 500V475H555V215H520" fill="none" stroke="#b38b22" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arrow-gold)"/>
+  <path d="M1082 300V380" fill="none" stroke="#80579a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-purple)"/>
+  <path d="M990 235H955V120H205V155" fill="none" stroke="#80579a" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrow-purple)"/>
+</svg>

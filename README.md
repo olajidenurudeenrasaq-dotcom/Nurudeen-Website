@@ -11,7 +11,9 @@ The EC2 instance's AWS **Name** tag is `Nurudeen Website`. The public address re
 
 ## Architecture diagram
 
-The editable architecture diagram is in [`architecture.drawio`](./architecture.drawio). Open [app.diagrams.net](https://app.diagrams.net), choose **File > Open From > Device**, and select that file. No plugin is required to view or edit it in diagrams.net. To edit the diagram inside VS Code instead, install a draw.io/diagrams.net extension; this is optional.
+![AWS two-tier architecture for Nurudeen's Website](./architecture.svg)
+
+The image above is the README preview. The deployment also serves this diagram on the website homepage at `/architecture.svg`. The editable diagram is available as [`architecture.drawio`](./architecture.drawio). Open [app.diagrams.net](https://app.diagrams.net), choose **File > Open From > Device**, and select that file. No plugin is required to view or edit it in diagrams.net. To edit the diagram inside VS Code instead, install a draw.io/diagrams.net extension; this is optional.
 
 ## Important costs
 

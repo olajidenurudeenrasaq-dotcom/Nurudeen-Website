@@ -210,9 +210,14 @@ resource "aws_instance" "client" {
         <h1>Welcome to Nurudeen's website!</h1>
         <p>This site is served by the public client tier.</p>
         <p><a href="/middle">Check the private middle tier</a></p>
+        <h2>Website architecture</h2>
+        <img src="/architecture.svg" alt="Diagram of the Nurudeen Website AWS two-tier architecture" style="max-width: 100%; height: auto;">
       </body>
     </html>
     HTML
+    cat > /var/www/html/architecture.svg <<'SVG'
+    ${file("${path.module}/architecture.svg")}
+    SVG
     cat > /etc/httpd/conf.d/middle-proxy.conf <<'APACHE'
     ProxyRequests Off
     ProxyPass /middle http://${aws_instance.middle.private_ip}:8080/
